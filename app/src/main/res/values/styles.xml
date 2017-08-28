@@ -13,9 +13,8 @@
         <item name="android:textSize">20sp</item>
     </style>
     
-    <style name="NoStatusStyle" parent="AppTheme">
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
+    <style name="ImageTranslucentTheme" parent="AppTheme">
+        <!--在安卓4.4之前的版本运行，直接跟随系统主题-->
     </style>
 
 </resources>

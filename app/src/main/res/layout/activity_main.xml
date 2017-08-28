@@ -1,28 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout
-    android:id="@+id/drawer_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
 
-    <LinearLayout
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context="com.jensen.studymaterialdesign.MainActivity">
+        android:layout_height="match_parent">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/tool_bar"
+        <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="?android:attr/actionBarSize"
-            android:background="@color/colorPrimary"
-            app:navigationIcon="@drawable/back_navigation"
-            app:popupTheme="@style/tool_bar_menu_text_theme"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"
             >
-        </android.support.v7.widget.Toolbar>
-    </LinearLayout>
+            <!--此ScrollFlags向下滚动内容toolBar就会可见-->
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/tool_bar"
+                android:layout_width="match_parent"
+                android:layout_height="?android:attr/actionBarSize"
+                android:background="@color/colorPrimary"
+                app:navigationIcon="@drawable/back_navigation"
+                app:popupTheme="@style/tool_bar_menu_text_theme"
+                app:layout_scrollFlags="scroll|enterAlways"
+                >
+            </android.support.v7.widget.Toolbar>
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tab_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabGravity="fill"
+                app:tabMode="fixed"
+                app:tabTextColor="#FFFFFF"
+                app:tabSelectedTextColor="#FF0000"
+                >
+
+            </android.support.design.widget.TabLayout>
+
+        </android.support.design.widget.AppBarLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            >
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </android.support.v4.view.ViewPager>
+
+        </FrameLayout>
+
+    </android.support.design.widget.CoordinatorLayout>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/navigation_view"
@@ -31,7 +66,6 @@
         android:layout_gravity="start"
         app:headerLayout="@layout/navigation_view_header_layout"
         app:menu="@menu/navigation_view_menu"
-        android:theme="@style/NoStatusStyle"
         >
     </android.support.design.widget.NavigationView>
 
