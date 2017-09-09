@@ -29,6 +29,15 @@
                 >
             </android.support.v7.widget.Toolbar>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="我会被隐藏吗！"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                />
+
             <android.support.design.widget.TabLayout
                 android:id="@+id/tab_layout"
                 android:layout_width="match_parent"

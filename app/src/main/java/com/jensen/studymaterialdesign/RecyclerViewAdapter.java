@@ -36,16 +36,39 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     @Override
-    public void onBindViewHolder(MyHolder holder, final int position) {
+    public void onBindViewHolder(final MyHolder holder, final int position) {
         NBAStar nbaStar = mNBAStarArrayList.get(position);
         holder.icon.setImageResource(nbaStar.getIcon());
         holder.name.setText(nbaStar.getName());
+        //点击事件
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mOnItemRecyclerListener.onItemClick(position);
+                int layoutPosition = holder.getLayoutPosition();
+                mOnItemRecyclerListener.onItemClick(layoutPosition);
             }
         });
+
+        //长按事件
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                int adapterPosition = holder.getAdapterPosition();
+                int layoutPosition = holder.getLayoutPosition();
+                mOnItemRecyclerListener.onLongClick(layoutPosition);
+                return false;
+            }
+        });
+    }
+
+    public void insertData(NBAStar nbaStar){
+        mNBAStarArrayList.add(mNBAStarArrayList.size()-1,nbaStar);
+        notifyItemInserted(mNBAStarArrayList.size()-1);
+    }
+
+    public void removeData(int position){
+        mNBAStarArrayList.remove(position);
+        notifyItemRemoved(position);
     }
 
     @Override
@@ -66,6 +89,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public interface OnItemRecyclerListener{
         void onItemClick(int position);
+        void onLongClick(int position);
     }
 
     private OnItemRecyclerListener mOnItemRecyclerListener;

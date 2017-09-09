@@ -37,7 +37,6 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                 mImageView.setImageResource(icon);
                 break;
         }
-
         mToolbar.setNavigationOnClickListener(this);
     }
 

@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,20 +22,28 @@ import butterknife.Unbinder;
  * Created by Administrator on 2017/8/28.
  */
 
-public class TabTwoFragment extends Fragment {
+public class TabTwoFragment extends BaseFragment {
     private static final String TAG = "TabTwoFragment";
     @BindView(R.id.nested_scroll_view)
     NestedScrollView mNestedScrollView;
     WebView mWebView;
     private ProgressDialog mProgressDialog;
     private Unbinder mUnbinder;
+    private boolean isPrepared;//fragment初始化完成
+    private View mView;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_tab_two, container, false);
-        mUnbinder = ButterKnife.bind(this, view);
+        mView = inflater.inflate(R.layout.fragment_tab_two, container, false);
+        mUnbinder = ButterKnife.bind(this, mView);
         mProgressDialog = initProgressDialog();
+        isPrepared = true;
+        lazyLoad();
+        return mView;
+    }
+
+    private void initWebView() {
         mWebView = new WebView(getActivity());
         WebSettings settings = mWebView.getSettings();
         settings.setJavaScriptEnabled(true);
@@ -48,8 +55,18 @@ public class TabTwoFragment extends Fragment {
         mWebView.loadUrl("http://www.jianshu.com/");
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         mWebView.setLayoutParams(layoutParams);
-        mNestedScrollView.addView(mWebView);
-        return view;
+        if (mNestedScrollView.getChildCount() == 0) {
+            mNestedScrollView.addView(mWebView);
+        }
+    }
+
+    //懒加载 即当前fragment显示的时候才加载数据
+    @Override
+    protected void lazyLoad() {
+        if (!isPrepared || !isVisible) {
+            return;
+        }
+        initWebView();
     }
 
     class MyWebClient extends WebViewClient {
@@ -57,7 +74,7 @@ public class TabTwoFragment extends Fragment {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             view.loadUrl(url);
-            Log.i(TAG, "shouldOverrideUrlLoading: "+url);
+            Log.i(TAG, "shouldOverrideUrlLoading: " + url);
             return true;
         }
 
@@ -87,7 +104,7 @@ public class TabTwoFragment extends Fragment {
         }
     }
 
-    public ProgressDialog initProgressDialog(){
+    public ProgressDialog initProgressDialog() {
         ProgressDialog progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("加载中...");
         return progressDialog;
@@ -98,4 +115,5 @@ public class TabTwoFragment extends Fragment {
         super.onDestroyView();
         mUnbinder.unbind();
     }
+
 }
